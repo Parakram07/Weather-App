@@ -2,8 +2,22 @@ const apiKey = "da367fc24ba793de8eff595872d99280";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 const searchBox = document.querySelector(".search input");
 const searchBtn = document.querySelector(".search button");
+const searchForm = document.getElementById("searchForm");
 const Icon = document.querySelector(".icon");
 const defaultCity = "Guadalajara";
+
+document.addEventListener("DOMContentLoaded", function () {
+  searchForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(searchForm);
+    const cityName = formData.get("cityName");
+
+    checkWeather(cityName.trim());
+
+    searchForm.reset();
+  });
+});
 
 async function checkWeather(city) {
   const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
@@ -45,10 +59,6 @@ async function checkWeather(city) {
 }
 
 checkWeather(defaultCity);
-
-searchBtn.addEventListener("click", () => {
-  checkWeather(searchBox.value);
-});
 
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
